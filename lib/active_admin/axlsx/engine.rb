@@ -12,7 +12,7 @@ module ActiveAdmin
 
         ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::Axlsx::DSL
         ActiveAdmin::Resource.send :include, ActiveAdmin::Axlsx::ResourceExtension
-        ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
+        ActiveAdmin::ResourceController.prepend ActiveAdmin::Axlsx::ResourceControllerExtension
       end
     end
   end

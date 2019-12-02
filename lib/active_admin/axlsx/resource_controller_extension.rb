@@ -2,13 +2,11 @@ module ActiveAdmin
   module Axlsx
     module ResourceControllerExtension
       def self.included(base)
-        base.send :alias_method_chain, :per_page, :xlsx
-        base.send :alias_method_chain, :index, :xlsx
         base.send :respond_to, :xlsx
       end
 
-      def index_with_xlsx(&block)
-        index_without_xlsx do |format|
+      def index(&block)
+        super do |format|
           block.call format if block_given?
 
           format.xlsx do
@@ -21,12 +19,12 @@ module ActiveAdmin
       end
 
       # patching per_page to use the CSV record max for pagination when the format is xlsx
-      def per_page_with_xlsx
-        if request.format ==  Mime::Type.lookup_by_extension(:xlsx)
+      def per_page
+        if request.format == Mime::Type.lookup_by_extension(:xlsx)
           return active_admin_config.max_per_page
         end
 
-        per_page_without_xlsx
+        super
       end
 
       # Returns a filename for the xlsx file using the collection_name
